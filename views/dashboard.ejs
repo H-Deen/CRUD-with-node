@@ -8,12 +8,37 @@
 </head>
 <body class="bg-gray-100 flex flex-col min-h-screen">
 
+    <!-- Navbar -->
     <%- include("./partials/navbar.ejs") %>
 
     <!-- Main Content -->
-    <main class="flex-grow flex items-center justify-center">
-        <div>
-            <h1 class="text-4xl font-bold text-gray-800">Welcome to the dashboard!</h1>
+    <main class="flex-grow flex items-center justify-center p-6">
+        <div class="w-full max-w-3xl bg-white shadow-md rounded-lg p-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-6">Welcome to the dashboard!</h1>
+
+            <!-- User Table -->
+            <table class="min-w-full bg-white border rounded-lg">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="py-3 px-4 border-b-2 text-left text-gray-600 font-semibold">Full Name</th>
+                        <th class="py-3 px-4 border-b-2 text-left text-gray-600 font-semibold">Username</th>
+                        <th class="py-3 px-4 border-b-2 text-left text-gray-600 font-semibold">Email</th>
+                        <th class="py-3 px-4 border-b-2 text-left text-gray-600 font-semibold">Mobile Number</th>
+                        <th class="py-3 px-4 border-b-2 text-left text-gray-600 font-semibold">View Profile</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% data.forEach(user => { %>
+                        <tr class="hover:bg-gray-100 border-b">
+                            <td class="py-3 px-4 text-gray-700"><%= user.fullName %></td>
+                            <td class="py-3 px-4 text-gray-700"><%= user.username %></td>
+                            <td class="py-3 px-4 text-gray-700"><%= user.email %></td>
+                            <td class="py-3 px-4 text-gray-700"><%= user.cellNum %></td>
+                            <td class="py-3 px-4 text-gray-700"><button type="button"><a href="/users/<%= user.id %>">View</a></button></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
         </div>
     </main>
 
