@@ -42,7 +42,7 @@ app.route('/register')
         try {
             await fs.writeFile('data.json', JSON.stringify(users, null, 2));
             console.log('User added successfully');
-            res.redirect('/');
+            res.redirect('/users');
         } catch (error) {
             console.error("Error saving data:", error);
             res.status(500).send("Server Error");
@@ -69,7 +69,7 @@ app.route('/users/:id')
         try {
             await fs.writeFile('data.json', JSON.stringify(users, null, 2));
             console.log('User updated successfully');
-            res.redirect('/users');
+    
         } catch (error) {
             console.error("Error updating user:", error);
             res.status(500).send("Server Error");
@@ -87,7 +87,7 @@ app.route('/users/:id')
         try {
             await fs.writeFile('data.json', JSON.stringify(users, null, 2));
             console.log('User deleted successfully');
-            res.redirect('/users');
+            
         } catch (error) {
             console.error("Error deleting user:", error);
             res.status(500).send("Server Error");

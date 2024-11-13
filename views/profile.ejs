@@ -8,6 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         async function updateUser(event) {
+            event.preventDefault()
+
             const formData = new FormData(document.querySelector('#profileForm'))
             const id = document.querySelector('#userId').value
             const data = {
@@ -19,7 +21,7 @@
 
             try {
                 const response = await fetch(`/users/${id}`, {
-                    method: PUT,
+                    method: "PUT",
                     headers: {
                         "Content-Type": "application/json"
                     },
@@ -43,7 +45,7 @@
             if (confirmDelete) {
                 try {
                     const response = await fetch(`/users/${id}`, {
-                        method: DELETE,
+                        method: "DELETE",
                         headers:{
                             "Content-Type": "application/json"
                         }
@@ -107,12 +109,11 @@
                     <button type="submit"
                         class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition duration-200">Update</button>
                     <!-- Submit Button -->
-                    <button type="button" onclick="deleteUser(`${user.id}`)"
+                    <button type="button" onclick="deleteUser(<%= user.id %>)"
                         class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition duration-200">Delete</button>
                 </form>
             </div>
         </main>
 
 </body>
-
 </html>
