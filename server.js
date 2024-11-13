@@ -9,7 +9,7 @@ app.set('view engine', 'ejs');
 
 let users = [];
 
-// Load data.json once when the server starts
+
 async function loadData() {
     try {
         const fileData = await fs.readFile(path.resolve('data.json'), 'utf-8');
@@ -69,6 +69,7 @@ app.route('/users/:id')
         try {
             await fs.writeFile('data.json', JSON.stringify(users, null, 2));
             console.log('User updated successfully');
+            res.status(200).json({ message: 'User updated successfully' });
     
         } catch (error) {
             console.error("Error updating user:", error);
@@ -78,6 +79,7 @@ app.route('/users/:id')
     .delete(async (req, res) => {
         const id = Number(req.params.id);
         const userIndex = users.findIndex(user => user.id === id);
+        console.log(userIndex)
         if (userIndex === -1) {
             return res.status(404).send({ message: 'User not found' });
         }
@@ -87,6 +89,7 @@ app.route('/users/:id')
         try {
             await fs.writeFile('data.json', JSON.stringify(users, null, 2));
             console.log('User deleted successfully');
+            res.status(200).json({ message: 'User deleted successfully' });
             
         } catch (error) {
             console.error("Error deleting user:", error);
