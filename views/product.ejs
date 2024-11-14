@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        async function updateUser(event) {
+            event.preventDefault()
+
+            const formData = new FormData(document.querySelector('#profileForm'))
+            const id = document.querySelector('#userId').value
+            const data = {
+                fullName: formData.get("fullName"),
+                email: formData.get("email"),
+                username: formData.get("username"),
+                cellNum: formData.get("cellNum")
+            }
+
+            try {
+                const response = await fetch(`/users/${id}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
+
+                if (response.ok) {
+                    alert('User updated successfully')
+                    window.location.href = '/users'
+                } else {
+                    alert("Error updating user.")
+                }
+            } catch (error) {
+                console.error("Error:", error)
+                alert("An error occurred while updating the profile.")
+            }
+        }
+
+        async function deleteUser(id) {
+            const confirmDelete = confirm('Are you sure you want to delete the user?')
+            if (confirmDelete) {
+                try {
+                    const response = await fetch(`/users/${id}`, {
+                        method: "DELETE",
+                        headers:{
+                            "Content-Type": "application/json"
+                        }
+                    })
+
+                    if (response.ok) {
+                        alert('User deleted successfully')
+                        window.location.href = '/users'
+                    }else{
+                        alert('Error deleting user')
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the user.')
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+    <%- include("./partials/navbar.ejs") %>
+
+        <!-- Main Content -->
+        <main class="flex-grow flex items-center justify-center">
+            <!-- Form Container -->
+            <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Your Profile</h2>
+                <form id="profileForm" onsubmit="updateUser(event)" class="space-y-4">
+                    <input type="hidden" id="userId" value="<%= user.id %>">
+                    <!-- Full Name Field -->
+                    <div>
+                        <label for="fullName" class="block text-sm font-medium text-gray-700">Full Name</label>
+                        <input type="text" name="fullName" id="fullName" value="<%= user.fullName %>"
+                            class="mt-1 p-2 w-full border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <!-- Email Field -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" name="email" id="email" value="<%= user.email %>"
+                            class="mt-1 p-2 w-full border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <!-- Username Field -->
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                        <input type="text" name="username" id="username" value="<%= user.username %>"
+                            class="mt-1 p-2 w-full border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <!-- Phone Number Field -->
+                    <div>
+                        <label for="cellNum" class="block text-sm font-medium text-gray-700">Mobile Number</label>
+                        <input type="tel" name="cellNum" id="cellNum" value="<%= user.cellNum %>"
+                            class="mt-1 p-2 w-full border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <!-- Save Button -->
+                    <button type="submit"
+                        class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition duration-200">Update</button>
+                    <!-- Submit Button -->
+                    <button type="button" onclick="deleteUser('<%= user.id %>')"
+                        class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition duration-200">Delete</button>
+                </form>
+            </div>
+        </main>
+
+</body>
+</html>
